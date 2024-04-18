@@ -2,8 +2,29 @@ using codessey_csharp_server.Repositories;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using codessey_csharp_server.Models.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthorization();
+
+// change from UseInMemory to sql database
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options => options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("AuthDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
 
 // Add services to the container.
@@ -31,6 +52,7 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapIdentityApi<IdentityUser>();
 
 app.MapControllers();
 
