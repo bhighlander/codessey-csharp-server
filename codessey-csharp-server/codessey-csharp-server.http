@@ -1,0 +1,6 @@
+@codessey_csharp_server_HostAddress = http://localhost:5216
+
+GET {{codessey_csharp_server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

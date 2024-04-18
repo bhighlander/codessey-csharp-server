@@ -1,0 +1,9 @@
+                        entries.Add(new Entry
+                        {
+                            Id = DbUtils.GetInt(reader, "EntryId"),
+                            Title = DbUtils.GetString(reader, "Title"),
+                            Content = DbUtils.GetString(reader, "Content"),
+                            DateCreated = DbUtils.GetDateTime(reader, "Title"),
+                            Solved = DbUtils.IsDbNull(reader, "Title"),
+                            Categories = DbUtils.GetString(reader, "Title"),
+                        });
